@@ -9,7 +9,6 @@ import {
   getDay,
 } from "date-fns";
 
-// メイン関数
 function main() {
   let { year, month } = fixYearMonth();
   displayCalendar(year, month);
@@ -53,5 +52,4 @@ function displayDaysOfMonth(year, month) {
   console.log(margin + calendarString);
 }
 
-// メイン関数を実行
 main();
