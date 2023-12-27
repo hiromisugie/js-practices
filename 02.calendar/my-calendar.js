@@ -24,11 +24,16 @@ function fixYearMonth() {
   return { year, month };
 }
 
-// 指定された年月のカレンダー（年・月・曜日を含む）を表示
+// 指定された年月のカレンダーを表示
 function displayCalendar(year, month) {
+  displayCalendarHeader(year, month);
+  displayDaysOfMonth(year, month);
+}
+
+// 指定された年月のカレンダーヘッダー（年・月・曜日の部分）を表示
+function displayCalendarHeader(year, month) {
   console.log(format(new Date(year, month - 1), "     M月 yyyy"));
   console.log("日 月 火 水 木 金 土");
-  displayDaysOfMonth(year, month);
 }
 
 // 指定された年月のカレンダー（日付部分のみ）を表示
