@@ -11,23 +11,17 @@ import {
 
 // メイン関数
 function main() {
-  let { year, month } = getYearMonth();
-  if (year && month) {
-    displayCalendar(year, month);
-  } else if (year) {
-    displayCalendar(year, new Date().getMonth() + 1);
-  } else if (month) {
-    displayCalendar(new Date().getFullYear(), month);
-  } else {
-    displayCalendar(new Date().getFullYear(), new Date().getMonth() + 1);
-  }
+  let { year, month } = fixYearMonth();
+  displayCalendar(year, month);
 }
 
-// コマンドライン引数から年月を取得
-function getYearMonth() {
+// コマンドライン引数の有無によって年月を取得・確定
+function fixYearMonth() {
   let argv = minimist(process.argv.slice(2));
-  let year = argv.y;
-  let month = argv.m;
+  let currentYear = new Date().getFullYear();
+  let currentMonth = new Date().getMonth() + 1;
+  let year = argv.y || currentYear;
+  let month = argv.m || currentMonth;
   return { year, month };
 }
 
