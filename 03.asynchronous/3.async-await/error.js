@@ -24,7 +24,7 @@ function createTable(db) {
 // レコードを追加し、自動採番されたIDを標準出力に出力する
 async function insertRecord(db) {
   try {
-    // 存在しないカラムへの挿入を試み、意図的にエラーを発生させる
+    // db.runをPromiseにラップし、非同期処理にした上で意図的にエラーを発生させる
     const result = await new Promise((resolve, reject) => {
       db.run(
         "INSERT INTO numbers(non_existent_column) VALUES(?)",
@@ -45,7 +45,7 @@ async function insertRecord(db) {
 // レコードを取得し、IDを標準出力に出力する
 async function selectRecord(db) {
   try {
-    // db.getをPromiseにラップし、非同期処理を実行
+    // db.getをPromiseにラップし、非同期処理にした上で意図的にエラーを発生させる
     const row = await new Promise((resolve, reject) => {
       db.get(
         "SELECT non_existent_column FROM numbers",
