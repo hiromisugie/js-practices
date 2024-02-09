@@ -56,12 +56,7 @@ async function selectRecord(db) {
         },
       );
     });
-    if (row) {
-      console.log(`次のIDが取得されました: ${row.id}`);
-    } else {
-      // rowがundefinedまたはnullの場合、該当するレコードが存在しないことを示す
-      console.log("該当するレコードが存在しません。");
-    }
+    console.log(`次のIDが取得されました: ${row.id}`);
   } catch (err) {
     console.error(`レコード取得時のエラー: ${err.message}`);
   }
