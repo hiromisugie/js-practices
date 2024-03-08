@@ -11,9 +11,6 @@ runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
       console.log(`次のIDが取得されました: ${row.id}`);
     });
   })
-  .catch(function (error) {
-    console.error('エラーが発生しました:', error);
-  })
   .finally(function () {
     db.close();
   });
