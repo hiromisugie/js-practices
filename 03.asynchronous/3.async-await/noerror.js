@@ -2,7 +2,9 @@ import { db, runPromise, getAllPromise } from "../functions.js";
 
 async function main() {
   try {
-    await runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)");
+    await runPromise(
+      "CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)",
+    );
     const id = await runPromise("INSERT INTO numbers DEFAULT VALUES");
     console.log(`次のIDが自動採番されました: ${id}`);
     const rows = await getAllPromise("SELECT * FROM numbers");

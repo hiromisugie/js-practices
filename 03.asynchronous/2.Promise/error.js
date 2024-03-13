@@ -7,10 +7,11 @@ runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
     return getAllPromise("SELECT * FROM numbers");
   })
   .catch(function () {
-    return getAllPromise("SELECT FROM non_existent_column")
-      .catch(function (error) {
-        console.error('レコード追加時のエラーが発生しました:', error);
-      });
+    return getAllPromise("SELECT FROM non_existent_column").catch(
+      function (error) {
+        console.error("レコード追加時のエラーが発生しました:", error);
+      },
+    );
   })
   .then(function (rows) {
     rows.forEach(function (row) {
@@ -18,10 +19,11 @@ runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
     });
   })
   .catch(function () {
-    return getAllPromise("SELECT FROM non_existent_column")
-      .catch(function (error) {
-        console.error('レコード取得時のエラーが発生しました:', error);
-      });
+    return getAllPromise("SELECT FROM non_existent_column").catch(
+      function (error) {
+        console.error("レコード取得時のエラーが発生しました:", error);
+      },
+    );
   })
   .finally(function () {
     db.close();
