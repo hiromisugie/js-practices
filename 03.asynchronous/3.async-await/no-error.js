@@ -1,4 +1,4 @@
-import { db, runPromise, getAllPromise } from "../functions.js";
+import { db, runPromise, getAllPromise } from "../db-operations.js";
 
 async function main() {
   try {

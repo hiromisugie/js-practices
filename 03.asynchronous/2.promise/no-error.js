@@ -1,4 +1,4 @@
-import { db, runPromise, getAllPromise } from "../functions.js";
+import { db, runPromise, getAllPromise } from "../db-operations.js";
 
 runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
   .then(() => runPromise("INSERT INTO numbers DEFAULT VALUES"))
