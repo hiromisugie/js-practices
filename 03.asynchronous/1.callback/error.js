@@ -5,6 +5,7 @@ const db = new sqlite3.Database(":memory:");
 db.run(
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
+    // 意図的にエラーを発生させるために、nullを挿入する
     db.run("INSERT INTO books (title) VALUES(?)", null, function (err) {
       if (err) {
         console.error(`新しい本を追加する時のエラー: ${err.message}`);
