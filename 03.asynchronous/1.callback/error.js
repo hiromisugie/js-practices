@@ -3,26 +3,23 @@ import sqlite3 from "sqlite3";
 const db = new sqlite3.Database(":memory:");
 
 db.run(
-  "CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)",
+  "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   () => {
-    db.run(
-      "INSERT INTO numbers(non_existent_column) VALUES(?)",
-      [1],
-      function (err) {
+    db.run("INSERT INTO books (title) VALUES(?)", null, function (err) {
+      if (err) {
+        console.error(`新しい本を追加する時のエラー: ${err.message}`);
+      } else {
+        console.log(`新しい本が追加されました: ${this.lastID}`);
+      }
+      // 意図的にエラーを発生させるために、存在しないusersを参照する
+      db.get("SELECT * FROM users", (err, row) => {
         if (err) {
-          console.error(`レコード追加時のエラー: ${err.message}`);
+          console.error(`本を取得する時のエラー: ${err.message}`);
         } else {
-          console.log(`次のIDが自動採番されました: ${this.lastID}`);
+          console.log(`取得した本: ${row.title}`);
         }
-        db.get("SELECT non_existent_column FROM numbers", (err, row) => {
-          if (err) {
-            console.error(`レコード取得時のエラー: ${err.message}`);
-          } else {
-            console.log(`次のIDが取得されました: ${row.id}`);
-          }
-          db.close();
-        });
-      },
-    );
+        db.close();
+      });
+    });
   },
 );
