@@ -8,18 +8,18 @@ export const runPromise = (sql, params = []) =>
       if (err) {
         reject(err);
       } else {
-        resolve(this.lastID);
+        resolve(this);
       }
     });
   });
 
-export const getAllPromise = (sql, params = []) =>
-  new Promise(function (resolve, reject) {
-    db.all(sql, params, function (err, rows) {
+export const getPromise = (sql, params = []) =>
+  new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
       if (err) {
         reject(err);
       } else {
-        resolve(rows);
+        resolve(row);
       }
     });
   });

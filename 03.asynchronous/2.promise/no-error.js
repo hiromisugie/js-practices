@@ -1,16 +1,20 @@
-import { db, runPromise, getAllPromise } from "../db-operations.js";
+import { db, runPromise, getPromise } from "../db-operations.js";
 
-runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
-  .then(() => runPromise("INSERT INTO numbers DEFAULT VALUES"))
-  .then(function (id) {
-    console.log(`次のIDが自動採番されました: ${id}`);
-    return getAllPromise("SELECT * FROM numbers");
+runPromise(
+  "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
+)
+  .then(() =>
+    runPromise("INSERT INTO books(title) VALUES(?)", ["独習JavaScript"]),
+  )
+  .then((result) => {
+    console.log(`新しい本が追加されました: ${result.lastID}`);
+    return getPromise("SELECT * FROM books");
   })
-  .then(function (rows) {
-    rows.forEach(function (row) {
-      console.log(`次のIDが取得されました: ${row.id}`);
-    });
+  .then((row) => {
+    if (row) {
+      console.log(`取得した本: ${row.title}`);
+    }
   })
-  .finally(function () {
+  .finally(() => {
     db.close();
   });
