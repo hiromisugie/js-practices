@@ -19,3 +19,14 @@ export const getPromise = (db, sql, params = []) =>
       }
     });
   });
+
+export const closePromise = (db) =>
+  new Promise((resolve, reject) => {
+    db.close((err) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
