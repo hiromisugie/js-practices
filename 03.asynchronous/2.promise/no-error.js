@@ -19,6 +19,6 @@ runPromise(
       console.log(`取得した本: ${row.title}`);
     }
   })
-  .finally(() => {
-    closePromise(db);
+  .then(() => {
+    return closePromise(db);
   });
