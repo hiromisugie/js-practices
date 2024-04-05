@@ -1,14 +1,18 @@
-import { db, runPromise, getPromise } from "../db-operations.js";
+import sqlite3 from "sqlite3";
+import { runPromise, getPromise } from "../db-operations.js";
+
+const db = new sqlite3.Database(":memory:");
 
 runPromise(
+  db,
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() =>
-    runPromise("INSERT INTO books(title) VALUES(?)", ["独習JavaScript"]),
+    runPromise(db, "INSERT INTO books(title) VALUES(?)", ["独習JavaScript"]),
   )
   .then((result) => {
     console.log(`新しい本が追加されました: ${result.lastID}`);
-    return getPromise("SELECT * FROM books");
+    return getPromise(db, "SELECT * FROM books");
   })
   .then((row) => {
     if (row) {
