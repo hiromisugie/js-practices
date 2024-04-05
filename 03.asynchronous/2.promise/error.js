@@ -1,30 +1,34 @@
-import { db, runPromise, getAllPromise } from "../db-operations.js";
+import sqlite3 from "sqlite3";
+import { runPromise, getPromise, closePromise } from "../db-operations.js";
 
-runPromise("CREATE TABLE numbers(id INTEGER PRIMARY KEY AUTOINCREMENT)")
-  .then(() => runPromise("INSERT INTO numbers(non_existent_column) VALUES(?)"))
-  .then(function (id) {
-    console.log(`次のIDが自動採番されました: ${id}`);
-    return getAllPromise("SELECT * FROM numbers");
+const db = new sqlite3.Database(":memory:");
+
+runPromise(
+  db,
+  "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
+)
+  .then(() =>
+    // 意図的にエラーを発生させるために、nullを挿入する
+    runPromise(db, "INSERT INTO books(title) VALUES(?)", [null]),
+  )
+  .then((result) => {
+    console.log(`新しい本が追加されました: ${result.lastID}`);
   })
-  .catch(function () {
-    return getAllPromise("SELECT FROM non_existent_column").catch(
-      function (error) {
-        console.error("レコード追加時のエラーが発生しました:", error);
-      },
-    );
+  .catch((err) => {
+    console.error(`新しい本を追加する時のエラー: ${err.message}`);
   })
-  .then(function (rows) {
-    rows.forEach(function (row) {
-      console.log(`次のIDが取得されました: ${row.id}`);
-    });
+  .then(() =>
+    // 意図的にエラーを発生させるために、存在しないusersを参照する
+    getPromise(db, "SELECT * FROM users"),
+  )
+  .then((row) => {
+    if (row) {
+      console.log(`取得した本: ${row.title}`);
+    }
   })
-  .catch(function () {
-    return getAllPromise("SELECT FROM non_existent_column").catch(
-      function (error) {
-        console.error("レコード取得時のエラーが発生しました:", error);
-      },
-    );
+  .catch((err) => {
+    console.error(`本を取得する時のエラー: ${err.message}`);
   })
-  .finally(function () {
-    db.close();
+  .finally(() => {
+    closePromise(db);
   });
