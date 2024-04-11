@@ -18,7 +18,5 @@ runPromise(
     if (row) {
       console.log(`取得した本: ${row.title}`);
     }
-  })
-  .then(() => {
     return closePromise(db);
   });
