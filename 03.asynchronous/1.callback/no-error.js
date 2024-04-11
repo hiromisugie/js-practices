@@ -8,9 +8,7 @@ db.run(
     db.run("INSERT INTO books(title) VALUES(?)", "独習JavaScript", function () {
       console.log(`新しい本が追加されました: ${this.lastID}`);
       db.get("SELECT * FROM books", (_err, row) => {
-        if (row) {
-          console.log(`取得した本: ${row.title}`);
-        }
+        console.log(`取得した本: ${row.title}`);
         db.close();
       });
     });
