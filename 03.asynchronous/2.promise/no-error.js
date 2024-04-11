@@ -15,8 +15,6 @@ runPromise(
     return getPromise(db, "SELECT * FROM books");
   })
   .then((row) => {
-    if (row) {
-      console.log(`取得した本: ${row.title}`);
-    }
+    console.log(`取得した本: ${row.title}`);
     return closePromise(db);
   });
