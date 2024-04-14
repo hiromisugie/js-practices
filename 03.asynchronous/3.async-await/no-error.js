@@ -8,9 +8,11 @@ try {
     db,
     "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
   );
-  const result = await runPromise(db, "INSERT INTO books(title) VALUES(?)", [
+  const result = await runPromise(
+    db,
+    "INSERT INTO books(title) VALUES(?)",
     "独習JavaScript",
-  ]);
+  );
   console.log(`新しい本が追加されました: ${result.lastID}`);
 
   const row = await getPromise(db, "SELECT * FROM books");

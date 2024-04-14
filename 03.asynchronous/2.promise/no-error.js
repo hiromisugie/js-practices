@@ -8,7 +8,7 @@ runPromise(
   "CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL UNIQUE)",
 )
   .then(() =>
-    runPromise(db, "INSERT INTO books(title) VALUES(?)", ["独習JavaScript"]),
+    runPromise(db, "INSERT INTO books(title) VALUES(?)", "独習JavaScript"),
   )
   .then((result) => {
     console.log(`新しい本が追加されました: ${result.lastID}`);

@@ -10,9 +10,11 @@ try {
   );
   try {
     // 意図的にエラーを発生させるために、nullを挿入する
-    const result = await runPromise(db, "INSERT INTO books(title) VALUES(?)", [
+    const result = await runPromise(
+      db,
+      "INSERT INTO books(title) VALUES(?)",
       null,
-    ]);
+    );
     console.log(`新しい本が追加されました: ${result.lastID}`);
   } catch (err) {
     console.error(`新しい本を追加する時のエラー: ${err.message}`);

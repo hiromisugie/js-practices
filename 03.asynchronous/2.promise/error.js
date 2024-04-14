@@ -9,7 +9,7 @@ runPromise(
 )
   .then(() =>
     // 意図的にエラーを発生させるために、nullを挿入する
-    runPromise(db, "INSERT INTO books(title) VALUES(?)", [null]),
+    runPromise(db, "INSERT INTO books(title) VALUES(?)", null),
   )
   .then((result) => {
     console.log(`新しい本が追加されました: ${result.lastID}`);
