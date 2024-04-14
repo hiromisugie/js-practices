@@ -29,6 +29,4 @@ runPromise(
   .catch((err) => {
     console.error(`本を取得する時のエラー: ${err.message}`);
   })
-  .then(() => {
-    return closePromise(db);
-  });
+  .then(() => closePromise(db));
