@@ -22,9 +22,7 @@ runPromise(
     getPromise(db, "SELECT * FROM users"),
   )
   .then((row) => {
-    if (row) {
-      console.log(`取得した本: ${row.title}`);
-    }
+    console.log(`取得した本: ${row.title}`);
   })
   .catch((err) => {
     console.error(`本を取得する時のエラー: ${err.message}`);
