@@ -27,4 +27,5 @@ runPromise(
   .catch((err) => {
     console.error(`本を取得する時のエラー: ${err.message}`);
   })
+  .then(() => runPromise(db, "DROP TABLE books"))
   .then(() => closePromise(db));

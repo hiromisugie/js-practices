@@ -9,7 +9,9 @@ db.run(
       console.log(`新しい本が追加されました: ${this.lastID}`);
       db.get("SELECT * FROM books", (_err, row) => {
         console.log(`取得した本: ${row.title}`);
-        db.close();
+        db.run("DROP TABLE books", () => {
+          db.close();
+        });
       });
     });
   },

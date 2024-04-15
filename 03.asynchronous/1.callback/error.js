@@ -19,7 +19,9 @@ db.run(
         } else {
           console.log(`取得した本: ${row.title}`);
         }
-        db.close();
+        db.run("DROP TABLE books", () => {
+          db.close();
+        });
       });
     });
   },

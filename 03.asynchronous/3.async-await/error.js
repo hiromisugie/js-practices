@@ -34,4 +34,6 @@ try {
   }
 }
 
+await runPromise(db, "DROP TABLE books");
+
 await closePromise(db);

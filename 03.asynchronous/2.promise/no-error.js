@@ -16,5 +16,6 @@ runPromise(
   })
   .then((row) => {
     console.log(`取得した本: ${row.title}`);
-    return closePromise(db);
-  });
+    return runPromise(db, "DROP TABLE books");
+  })
+  .then(() => closePromise(db));
