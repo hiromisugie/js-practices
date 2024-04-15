@@ -16,7 +16,7 @@ try {
   );
   console.log(`新しい本が追加されました: ${result.lastID}`);
 } catch (err) {
-  if (err.code === "SQLITE_CONSTRAINT") {
+  if (err?.code === "SQLITE_CONSTRAINT") {
     console.error(`新しい本を追加する時のエラー: ${err.message}`);
   } else {
     throw err;
@@ -27,7 +27,7 @@ try {
   const row = await getPromise(db, "SELECT * FROM users");
   console.log(`取得した本: ${row.title}`);
 } catch (err) {
-  if (err.code === "SQLITE_ERROR") {
+  if (err?.code === "SQLITE_ERROR") {
     console.error(`本を取得する時のエラー: ${err.message}`);
   } else {
     throw err;
