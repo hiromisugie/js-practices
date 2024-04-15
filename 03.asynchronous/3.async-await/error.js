@@ -19,7 +19,6 @@ try {
   if (err.code === "SQLITE_CONSTRAINT") {
     console.error(`新しい本を追加する時のエラー: ${err.message}`);
   } else {
-    // 想定しないエラーは再送出する
     throw err;
   }
 }
@@ -31,7 +30,6 @@ try {
   if (err.code === "SQLITE_ERROR") {
     console.error(`本を取得する時のエラー: ${err.message}`);
   } else {
-    // 想定しないエラーは再送出する
     throw err;
   }
 }
