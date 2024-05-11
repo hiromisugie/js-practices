@@ -83,11 +83,14 @@ export class MemoManager {
           name: "memo",
           message: "Choose a memo you want to delete:",
           choices: choices,
+          result(names) {
+            return this.map(names);
+          },
         });
 
         const selectedId = await prompt.run();
         const sql = "DELETE FROM memos WHERE id = ?";
-        await db.run(sql, [parseInt(selectedId, 10)]);
+        await db.run(sql, [parseInt(Object.values(selectedId))]);
         console.log("Deleted memo.");
       }
     } catch (err) {
