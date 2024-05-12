@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { DatabaseManager } from "./src/database-manager.js";
 import { MemoManager } from "./src/memo-manager.js";
 import { CommandManager } from "./src/command-manager.js";
