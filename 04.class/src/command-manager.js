@@ -1,5 +1,8 @@
 import { argv } from "process";
 
+const ARG_LENGTH_WITHOUT_COMMAND = 2;
+const ARG_LENGTH_WITH_COMMAND = 3;
+
 export class CommandManager {
   constructor(memoManager) {
     this.memoManager = memoManager;
@@ -7,7 +10,7 @@ export class CommandManager {
 
   async handleCommands() {
     try {
-      if (argv.length === 2) {
+      if (argv.length === ARG_LENGTH_WITHOUT_COMMAND) {
         console.log("Enter memo (Ctrl+d to exit):");
         let content = "";
         process.stdin.on("data", (data) => {
@@ -15,7 +18,7 @@ export class CommandManager {
         });
         await new Promise((resolve) => process.stdin.on("end", resolve));
         await this.memoManager.addMemo(content.trim());
-      } else if (argv.length === 3) {
+      } else if (argv.length === ARG_LENGTH_WITH_COMMAND) {
         const command = argv[2];
         switch (command) {
           case "-l":
