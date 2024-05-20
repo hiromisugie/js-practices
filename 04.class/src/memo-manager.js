@@ -45,20 +45,22 @@ export class MemoManager {
           const firstLine = this.getFirstLine(row.memo);
           return {
             name: `${row.memo.substring(0, firstLine)}`,
-            value: row.memo,
+            value: row.id,
           };
         });
         const prompt = new Select({
           name: "memo",
           message: "Choose a memo you want to see:",
           choices: choices,
+          result(names) {
+            return this.map(names);
+          },
         });
 
-        const selectedName = await prompt.run();
-        const fullMemo = choices.find(
-          (choice) => choice.name === selectedName,
-        ).value;
-        console.log(fullMemo);
+        const selectedId = await prompt.run();
+        const sql = "SELECT memo FROM memos WHERE id = ?";
+        const memo = await db.get(sql, [parseInt(Object.values(selectedId))]);
+        console.log(memo ? memo.memo : "Memo not found.");
       }
     } catch (err) {
       console.error(`Error when displaying memo details: ${err.message}`);
