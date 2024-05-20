@@ -20,7 +20,7 @@ export class MemoManager {
   async listMemos() {
     try {
       const db = await this.databaseManager.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos");
+      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
@@ -37,7 +37,7 @@ export class MemoManager {
   async readMemo() {
     try {
       const db = await this.databaseManager.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos");
+      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
@@ -68,7 +68,7 @@ export class MemoManager {
   async deleteMemo() {
     try {
       const db = await this.databaseManager.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos");
+      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
