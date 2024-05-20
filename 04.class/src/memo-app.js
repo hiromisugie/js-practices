@@ -3,7 +3,7 @@ import { open } from "sqlite";
 import enquirer from "enquirer";
 const { Select } = enquirer;
 
-export class MemoManager {
+export class MemoApp {
   constructor(databaseFile) {
     this.dbPromise = open({
       filename: databaseFile,
