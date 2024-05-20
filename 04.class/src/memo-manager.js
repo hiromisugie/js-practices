@@ -1,14 +1,19 @@
+import sqlite3 from "sqlite3";
+import { open } from "sqlite";
 import enquirer from "enquirer";
 const { Select } = enquirer;
 
 export class MemoManager {
-  constructor(databaseManager) {
-    this.databaseManager = databaseManager;
+  constructor(databaseFile) {
+    this.dbPromise = open({
+      filename: databaseFile,
+      driver: sqlite3.Database,
+    });
   }
 
   async addMemo(input) {
     try {
-      const db = await this.databaseManager.dbPromise;
+      const db = await this.dbPromise;
       const sql = "INSERT INTO memos (memo) VALUES (?)";
       await db.run(sql, input);
       console.log("New memo added.");
@@ -19,7 +24,7 @@ export class MemoManager {
 
   async listMemos() {
     try {
-      const db = await this.databaseManager.dbPromise;
+      const db = await this.dbPromise;
       const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
@@ -36,7 +41,7 @@ export class MemoManager {
 
   async readMemo() {
     try {
-      const db = await this.databaseManager.dbPromise;
+      const db = await this.dbPromise;
       const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
@@ -69,7 +74,7 @@ export class MemoManager {
 
   async deleteMemo() {
     try {
-      const db = await this.databaseManager.dbPromise;
+      const db = await this.dbPromise;
       const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
@@ -102,5 +107,10 @@ export class MemoManager {
 
   getFirstLine(memo) {
     return memo.indexOf("\n") === -1 ? memo.length : memo.indexOf("\n");
+  }
+
+  async close() {
+    const db = await this.dbPromise;
+    await db.close();
   }
 }

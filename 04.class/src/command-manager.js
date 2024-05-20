@@ -35,6 +35,6 @@ export class CommandManager {
     } else {
       console.error("Only one option can be specified.");
     }
-    await this.memoManager.databaseManager.close();
+    await this.memoManager.close();
   }
 }
