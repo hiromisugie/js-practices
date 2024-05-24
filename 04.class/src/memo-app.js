@@ -11,6 +11,11 @@ export class MemoApp {
     });
   }
 
+  async fetchMemos() {
+    const db = await this.dbPromise;
+    return await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
+  }
+
   async addMemo(input) {
     try {
       const db = await this.dbPromise;
@@ -24,8 +29,7 @@ export class MemoApp {
 
   async listMemos() {
     try {
-      const db = await this.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
+      const rows = await this.fetchMemos();
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
@@ -41,8 +45,7 @@ export class MemoApp {
 
   async readMemo() {
     try {
-      const db = await this.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
+      const rows = await this.fetchMemos();
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
@@ -62,6 +65,7 @@ export class MemoApp {
           },
         });
 
+        const db = await this.dbPromise;
         const selectedId = await prompt.run();
         const sql = "SELECT memo FROM memos WHERE id = ?";
         const memo = await db.get(sql, [parseInt(Object.values(selectedId))]);
@@ -74,8 +78,7 @@ export class MemoApp {
 
   async deleteMemo() {
     try {
-      const db = await this.dbPromise;
-      const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
+      const rows = await this.fetchMemos();
       if (rows.length === 0) {
         console.log("No memo has been registered yet.");
       } else {
@@ -95,6 +98,7 @@ export class MemoApp {
           },
         });
 
+        const db = await this.dbPromise;
         const selectedId = await prompt.run();
         const sql = "DELETE FROM memos WHERE id = ?";
         await db.run(sql, [parseInt(Object.values(selectedId))]);
