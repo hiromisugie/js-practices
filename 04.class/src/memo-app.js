@@ -21,20 +21,6 @@ export class MemoApp {
     return rows;
   }
 
-  // async fetchMemos() {
-  //   const db = await this.dbPromise;
-  //   return await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
-  // }
-
-  // async getValidMemos() {
-  //   const rows = await this.fetchMemos();
-  //   if (rows.length === 0) {
-  //     console.log("No memo has been registered yet.");
-  //     return;
-  //   }
-  //   return rows;
-  // }
-
   async addMemo(input) {
     try {
       const db = await this.dbPromise;
