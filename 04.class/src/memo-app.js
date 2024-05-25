@@ -11,19 +11,29 @@ export class MemoApp {
     });
   }
 
-  async fetchMemos() {
+  async fetchAndValidateMemos() {
     const db = await this.dbPromise;
-    return await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
-  }
-
-  async getValidMemos() {
-    const rows = await this.fetchMemos();
+    const rows = await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
     if (rows.length === 0) {
       console.log("No memo has been registered yet.");
       return;
     }
     return rows;
   }
+
+  // async fetchMemos() {
+  //   const db = await this.dbPromise;
+  //   return await db.all("SELECT id, memo FROM memos ORDER BY id ASC");
+  // }
+
+  // async getValidMemos() {
+  //   const rows = await this.fetchMemos();
+  //   if (rows.length === 0) {
+  //     console.log("No memo has been registered yet.");
+  //     return;
+  //   }
+  //   return rows;
+  // }
 
   async addMemo(input) {
     try {
@@ -38,7 +48,7 @@ export class MemoApp {
 
   async listMemos() {
     try {
-      const rows = await this.getValidMemos();
+      const rows = await this.fetchAndValidateMemos();
       if (!rows) return;
       rows.forEach((row) => {
         const firstLine = this.getFirstLine(row.memo);
@@ -80,7 +90,7 @@ export class MemoApp {
   }
 
   async promptForMemoChoice(message) {
-    const rows = await this.getValidMemos();
+    const rows = await this.fetchAndValidateMemos();
     if (!rows) return;
     const choices = rows.map((row) => {
       const firstLine = this.getFirstLine(row.memo);
