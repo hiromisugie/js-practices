@@ -45,31 +45,13 @@ export class MemoApp {
 
   async readMemo() {
     try {
-      const rows = await this.fetchMemos();
-      if (rows.length === 0) {
-        console.log("No memo has been registered yet.");
-        return;
-      }
-      const choices = rows.map((row) => {
-        const firstLine = this.getFirstLine(row.memo);
-        return {
-          name: `${row.memo.substring(0, firstLine)}`,
-          value: row.id,
-        };
-      });
-      const prompt = new Select({
-        name: "memo",
-        message: "Choose a memo you want to see:",
-        choices: choices,
-        result(names) {
-          return this.map(names);
-        },
-      });
-
+      const choicedId = await this.promptForMemoChoice(
+        "Choose a memo you want to read:",
+      );
+      if (!choicedId) return;
       const db = await this.dbPromise;
-      const selectedId = await prompt.run();
       const sql = "SELECT memo FROM memos WHERE id = ?";
-      const memo = await db.get(sql, [parseInt(Object.values(selectedId))]);
+      const memo = await db.get(sql, [parseInt(Object.values(choicedId))]);
       console.log(memo ? memo.memo : "Memo not found.");
     } catch (err) {
       console.error(`Error when displaying memo details: ${err.message}`);
@@ -78,35 +60,41 @@ export class MemoApp {
 
   async deleteMemo() {
     try {
-      const rows = await this.fetchMemos();
-      if (rows.length === 0) {
-        console.log("No memo has been registered yet.");
-        return;
-      }
-      const choices = rows.map((row) => {
-        const firstLine = this.getFirstLine(row.memo);
-        return {
-          name: `${row.memo.substring(0, firstLine)}`,
-          value: row.id,
-        };
-      });
-      const prompt = new Select({
-        name: "memo",
-        message: "Choose a memo you want to delete:",
-        choices: choices,
-        result(names) {
-          return this.map(names);
-        },
-      });
-
+      const choicedId = await this.promptForMemoChoice(
+        "Choose a memo you want to delete:",
+      );
+      if (!choicedId) return;
       const db = await this.dbPromise;
-      const selectedId = await prompt.run();
       const sql = "DELETE FROM memos WHERE id = ?";
-      await db.run(sql, [parseInt(Object.values(selectedId))]);
+      await db.run(sql, [parseInt(Object.values(choicedId))]);
       console.log("Deleted memo.");
     } catch (err) {
       console.error(`Error when deleting a memo: ${err.message}`);
     }
+  }
+
+  async promptForMemoChoice(message) {
+    const rows = await this.fetchMemos();
+    if (rows.length === 0) {
+      console.log("No memo has been registered yet.");
+      return;
+    }
+    const choices = rows.map((row) => {
+      const firstLine = this.getFirstLine(row.memo);
+      return {
+        name: `${row.memo.substring(0, firstLine)}`,
+        value: row.id,
+      };
+    });
+    const prompt = new Select({
+      name: "memo",
+      message: message,
+      choices: choices,
+      result(names) {
+        return this.map(names);
+      },
+    });
+    return await prompt.run();
   }
 
   getFirstLine(memo) {
